@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "aflinsjr@icloud.com <aflinsjr@icloud.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsnd --inspect --respawn --ignore-watch node_modules --transpile-only src/app.ts",
+    "start": "npm run start:docker && echo '\nwait 15s' && sleep 15 && npm run start:rabbit || echo '\ntry run `npm run start:rabbit\n`'",
+    "start:event": "node consumer.event.ts",
+    "start:rabbit": "node consumer.rabbit.ts",
+    "start:docker": "sudo docker run --rm -d --name amqp -p 5672:5672 -p 8080:15672 rabbitmq:management-alpine",
+    "stop": "npm run sudo stop:docker; npm run stop:event;npm run stop:rabbit;",
+    "stop:event": "killall node &>/dev/null",
+    "stop:rabbit": "killall node &>/dev/null",
+    "stop:docker": "docker stop amqp &>/dev/null"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.0.0",
+    "amqplib": "0.9.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
